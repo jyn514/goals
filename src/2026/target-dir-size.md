@@ -28,7 +28,7 @@ second only to slow compilation.
 We expect reducing disk space to benefit all environments that build Rust programs, but especially:
 - developers who heavily use multiple git worktrees/jj workspaces, such as AI-first workflows or contributors to the Rust compiler itself;
 - CI jobs that cache intermediate artifacts, both in storage space and in upload/download speeds;
-- persistent remote caches, such as used by Bazel and Buck2, primarily in storage space
+- persistent remote caches, such as used by Bazel and Buck2, primarily in upload/download speeds and disk IO usage.
 
 We also theorize that by reducing disk IO, we can speed up wall time for compilation itself.
 If our efforts are sufficiently fruitful, we could further decrease compilation time by allowing target directories to fit on a RAM disk (sometimes known as `tmpfs`).
@@ -52,7 +52,7 @@ Target directory sizes have had various ideas suggested on the Cargo, but not as
 I am aware of the following ongoing work:
 - The [cross workspace cache] project goal, which reduces the number of total artifacts, but does not reduce the size of each artifact.
 - [Deduplicate build artifacts across workspaces][cargo#17453] again reduces the number of total artifacts.
-- Reclaiming space between builds has several tracking issues ([cargo#5026], [cargo#13136], [cargo#13060]), but no project goal.
+- Garbage-collection work to reclaim space between builds has several tracking issues ([cargo#5026], [cargo#13136], [cargo#13060]), but no project goal.
 - Reusing caching between `check` and `build` is being investigated in the [incremental system redesign] goal, but cannot help with initial full builds.
 - [`-Zembed-metadata=no`][embed-metadata] avoids creating unnecessary metadata sections, but does not shrink the sections themselves when they're created.
 - [Reduce debuginfo to `line-tables-only` in the `dev` profile][cargo#17518] reduces the size of debuginfo in the most common scenarios, but does not improve builds that have full debuginfo.
@@ -235,8 +235,8 @@ Additional funding will allow me to hire and mentor other compiler and build sys
 not only accelerating timelines but also completing more overall workstreams.
 Furthermore, it will allow me to focus on design work rather than implementation, unlocking the larger structural improvements that require coordination between teams.
 
-This goal needs a minimum of (Ask) to run, but for that amount we could only complete 3-5 small workstreams.
-Further funding will lead to much more effective results.
+This goal needs a minimum of (Ask) to run, but for that amount we could only complete 3-5 small workstreams, most likely the items in the "Near-term improvements" section.
+Funding up to the full requested amount will allow us to complete all or almost all the proposed workstreams.
 
 I have extensive experience working on the compiler, including the query system and integration work between Rustc and Cargo.
 I also have project management experience from my time at Ferrocene,
