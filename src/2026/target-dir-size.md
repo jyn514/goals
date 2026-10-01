@@ -17,6 +17,28 @@ Our work will be incremental, in the sense that partial work outputs will still 
 
 ## Motivation
 
+### Why it matters
+
+Disk space is documented as a repeated concern;
+the [2025 "State of Rust Survey"][2025-survey] shows it as the second-most common complaint about the Rust toolchain,
+second only to slow compilation.
+
+[2025-survey]: https://blog.rust-lang.org/2026/03/02/2025-State-Of-Rust-Survey-results/#challenges-and-wishes-about-rust
+
+We expect reducing disk space to benefit all environments that build Rust programs, but especially:
+- developers who heavily use multiple git worktrees/jj workspaces, such as AI-first workflows or contributors to the Rust compiler itself;
+- CI jobs that cache intermediate artifacts, both in storage space and in upload/download speeds;
+- persistent remote caches, such as used by Bazel and Buck2, primarily in storage space
+
+We also theorize that by reducing disk IO, we can speed up wall time for compilation itself.
+If our efforts are sufficiently fruitful, we could further decrease compilation time by allowing target directories to fit on a RAM disk (sometimes known as `tmpfs`).
+
+Note that disk space at *compile time* (of intermediate artifacts) is different than disk space at *runtime* (of final artifacts).
+The [binary size reduction] roadmap tracks final artifacts; this goal is focused on intermediate artifacts.
+We expect that we may need to coordinate between teams, but that our efforts will not substantially overlap.
+
+[Binary size reduction]: https://goals.rust-lang.org/2026/roadmap-binary-size-reduction.html
+
 ### The status quo
 
 Compiling Rust programs taks three primary resources:
@@ -52,26 +74,6 @@ Furthermore, the Cargo team has suggested several possible improvements to disk 
 [cargo#17518]: https://github.com/rust-lang/cargo/pull/17518
 [incremental system redesign]: https://goals.rust-lang.org/2026/incremental-system-rethought.html
 [scratchpad]: https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Providing.20a.20dedicated.20scratchpad.2C.20instead.20of.20using.20.60OUT_DIR.60
-
-Disk space is documented as a repeated concern;
-the [2025 "State of Rust Survey"][2025-survey] shows it as the second-most common complaint about the Rust toolchain,
-second only to slow compilation.
-
-[2025-survey]: https://blog.rust-lang.org/2026/03/02/2025-State-Of-Rust-Survey-results/#challenges-and-wishes-about-rust
-
-We expect reducing disk space to benefit all environments that build Rust programs, but especially:
-- developers who heavily use multiple git worktrees/jj workspaces, such as AI-first workflows or contributors to the Rust compiler itself;
-- CI jobs that cache intermediate artifacts, both in storage space and in upload/download speeds;
-- persistent remote caches, such as used by Bazel and Buck2, primarily in storage space
-
-We also theorize that by reducing disk IO, we can speed up wall time for compilation itself.
-If our efforts are sufficiently fruitful, we could further decrease compilation time by allowing target directories to fit on a RAM disk (sometimes known as `tmpfs`).
-
-Note that disk space at *compile time* (of intermediate artifacts) is different than disk space at *runtime* (of final artifacts).
-The [binary size reduction] roadmap tracks final artifacts; this goal is focused on intermediate artifacts.
-We expect that we may need to coordinate between teams, but that our efforts will not substantially overlap.
-
-[Binary size reduction]: https://goals.rust-lang.org/2026/roadmap-binary-size-reduction.html
 
 ### What we propose to do about it
 
