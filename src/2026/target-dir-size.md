@@ -12,8 +12,14 @@
 Investigate, triage, and decrease the size of intermediate compilation directories (e.g. `target/`).
 With a funded team of 3-5 engineers, we aim over the next year to decrease the size of the directory by 60% or more for fresh builds and by 80% or more for repeated builds across version branches.
 We will benchmark based on real crates in the Rust ecosystem, focusing on disproportionately large and widely used crates.
+
 After benchmarking, we will work on multi-pronged approaches that allow parallel work on high-impact interventions.
 Our work will be incremental, in the sense that partial work outputs will still be useful; we do not need a full year to start seeing improvements.
+The more funding we receive, the more work we will be able to deliver.
+
+This goal does not currently include garbage-collecting entire target directories within Cargo.
+There is [existing work][cargo#13136] by Ross Sullivan on those improvements, but Ross is not a member of this goal.
+This goal *does* include garbage-collection within a target directory, such as artifacts from an earlier edit.
 
 ## Motivation
 
@@ -244,6 +250,9 @@ as well as consensus building experience on policy, design, and implementation w
 As part of this work, I would lead implementation, mentor contributors, and coordinate between the Compiler and Cargo teams.
 
 Kobzol has been responsible for implementing and stabilizing `-Z embed-metadata=no`, and is a current member of the Council.
+`embed-metadata` has reduced the size of release builds by [almost 30%][brlo] in the past, and we are confident that further similar improvements are possible.
+
+[brlo]: https://blog.rust-lang.org/inside-rust/2026/08/18/reducing-target-dir-size-on-nightly/
 
 Zeklandia has a non-traditional programming background, but has the logistical flexibility to do short-term contract work,
 and I hope to mentor her to be a long-term maintainer on these compiler subsystems.
