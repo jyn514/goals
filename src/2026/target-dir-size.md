@@ -37,7 +37,7 @@ I am aware of the following ongoing work:
 
 Furthermore, the Cargo team has suggested several possible improvements to disk size which could be incorporated into the project goal:
 - [Reduce how frequently build scripts need to be written][cargo#14948]
-- [Give build scripts a dedicated scratchpad for temporary artifacts](https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Providing.20a.20dedicated.20scratchpad.2C.20instead.20of.20using.20.60OUT_DIR.60)
+- [Give build scripts a dedicated scratchpad for temporary artifacts][scratchpad]
 - [Convert build scripts to artifact dependencies][cargo#14903]
 - [Pipeline build scripts, not just library crates](https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Pipelined.20builds/with/620427777)
 
@@ -51,6 +51,7 @@ Furthermore, the Cargo team has suggested several possible improvements to disk 
 [cargo#17453]: https://github.com/rust-lang/cargo/issues/17453
 [cargo#17518]: https://github.com/rust-lang/cargo/pull/17518
 [incremental system redesign]: https://goals.rust-lang.org/2026/incremental-system-rethought.html
+[scratchpad]: https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Providing.20a.20dedicated.20scratchpad.2C.20instead.20of.20using.20.60OUT_DIR.60
 
 Disk space is documented as a repeated concern;
 the [2025 "State of Rust Survey"][2025-survey] shows it as the second-most common complaint about the Rust toolchain,
@@ -144,7 +145,7 @@ Each of these can be worked on in parallel.
 | Task        | Owner(s) | Notes |
 | ----        | -------- | ----- |
 | Stabilize and enable `-Z embed-metadata=no` by default | @Kobzol | stablization PR already open but not yet merged |
-| Strip debuginfo from build scripts | ? | needs care to make sure that panics still show a symbolicated backtrace |
+| Reduce debuginfo in build scripts | ? | if [cargo#17518] doesn't already apply to build scripts, it could be extended |
 | Avoid serializing unnecessary incremental state | ? | needs further investigation |
 | Avoid serializing queries on disk where possible. | ? | changes must backed by benchmarks showing that this has little effect on compilation speed |
 | Dynamically link the standard library in build scripts | ? | |
@@ -187,7 +188,7 @@ Subtasks in this category can be worked on in parallel.
 
 | Task         | Owner(s) | Notes |
 | ----------- | -------- | ----- |
-| Design discussions with Cargo team | @jyn514 | Most uncertainty. Needs Cargo team capacity. |
+| Design discussions with Cargo team | @jyn514 | Most uncertainty. Needs Cargo team capacity. See [existing cargo discussion][scratchpad]. |
 | Add Cargo APIs that allow build scripts to communicate this | ? | |
 | Extend Cargo to GC temporary build script outputs | ? | |
 | Make targeted PRs within the ecosystem to switch crates to use the new APIs | ? | |
