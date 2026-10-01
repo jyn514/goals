@@ -205,8 +205,8 @@ Subtasks in this category can be worked on in parallel.
 | ---------- | ------------- | --------------------------------------- |
 | [cargo]    | Large | We will likely want to substantially redesign how `incremental/` directories and build script outputs are cached. We are confident we can find an approach that works for both t-cargo and t-compiler, and we can be responsible for implementation, but we will need design discussions and review from the Cargo team. |
 | [compiler] | Medium | Advice on where to look and which approaches are best; reviews for small-to-medium compiler PRs that improve binary size. We expect efforts to be focused in and around the query system and `rustc_metadata`. We understand that both these areas are quite complicated and fragile; we will clearly distinguish refactors, rearchitectures, and micro-optimizations. Note: Whether this is "medium" or "large" depends on our findings from the PoC. |
-| [compiler/performance] | Medium | Assistance selecting benchmarks; reviews for new intermediate artifact measurement support. |
-| [infra/bootstrap]    | Small              | We may make small tweaks to bootstrap code or to how `rustc-dev` .rlibs are uploaded. We will endevour to minimize changes to these areas.                                         |
+| [wg-compiler-performance] | Medium | Assistance selecting benchmarks; reviews for new intermediate artifact measurement support. |
+| [bootstrap]    | Small              | We may make small tweaks to bootstrap code or to how `rustc-dev` .rlibs are uploaded. We will endeavour to minimize changes to these areas.                                         |
 
 
 Suggested reviewers:
