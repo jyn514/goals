@@ -25,17 +25,31 @@ Compiling Rust programs taks three primary resources:
 3. Disk space
 
 CPU time, and to some extent wall time and memory use, has been relentlessly optimized and micro-optimized for many years in Rustc.
-Disk space is currently under investigation in Cargo, via the [cross workspace cache] goal, but has not yet been significantly investigated in Rustc.
-Reclaiming space between builds has several tracking issues ([cargo#5026], [cargo#13136], [cargo#13060])  but no project goal.
-Reusing caching between `check` and `build` is also being investigated in the [incremental system redesign] goal, but cannot help with initial full builds.
-Work such as [`-Zembed-metadata=no`][embed-metadata] avoids creating unnecessary metadata sections, but does not shrink the sections themselves when they're created.
-Build script disk usage to date has not been investigated in detail.
+Target directory sizes have had various ideas suggested on the Cargo, but not as much ongoing work due to funding limitaions, and hardly anything has been done on the Rustc side.
 
+I am aware of the following ongoing work:
+- The [cross workspace cache] project goal, which reduces the number of total artifacts, but does not reduce the size of each artifact.
+- [Deduplicate build artifacts across workspaces][cargo#17453] again reduces the number of total artifacts.
+- Reclaiming space between builds has several tracking issues ([cargo#5026], [cargo#13136], [cargo#13060]), but no project goal.
+- Reusing caching between `check` and `build` is being investigated in the [incremental system redesign] goal, but cannot help with initial full builds.
+- [`-Zembed-metadata=no`][embed-metadata] avoids creating unnecessary metadata sections, but does not shrink the sections themselves when they're created.
+- [Reduce debuginfo to `line-tables-only` in the `dev` profile][cargo#17518] reduces the size of debuginfo in the most common scenarios, but does not improve builds that have full debuginfo.
+
+Furthermore, the Cargo team has suggested several possible improvements to disk size which could be incorporated into the project goal:
+- [Reduce how frequently build scripts need to be written][cargo#14948]
+- [Give build scripts a dedicated scratchpad for temporary artifacts](https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Providing.20a.20dedicated.20scratchpad.2C.20instead.20of.20using.20.60OUT_DIR.60)
+- [Convert build scripts to artifact dependencies][cargo#14903]
+- [Pipeline build scripts, not just library crates](https://rust-lang.zulipchat.com/#narrow/channel/628857-t-cargo.2Fbuild-script/topic/Pipelined.20builds/with/620427777)
+
+[cargo#14948]: https://github.com/rust-lang/cargo/issues/14948
 [embed-metadata]: https://github.com/rust-lang/rust/issues/139165
 [cross workspace cache]: https://goals.rust-lang.org/2026/cargo-cross-workspace-cache.html
 [cargo#5026]: https://github.com/rust-lang/cargo/issues/5026
 [cargo#13060]: https://github.com/rust-lang/cargo/issues/13060
 [cargo#13136]: https://github.com/rust-lang/cargo/issues/13136
+[cargo#14903]: https://github.com/rust-lang/cargo/issues/14903
+[cargo#17453]: https://github.com/rust-lang/cargo/issues/17453
+[cargo#17518]: https://github.com/rust-lang/cargo/pull/17518
 [incremental system redesign]: https://goals.rust-lang.org/2026/incremental-system-rethought.html
 
 Disk space is documented as a repeated concern;
@@ -130,7 +144,6 @@ Each of these can be worked on in parallel.
 | Task        | Owner(s) | Notes |
 | ----        | -------- | ----- |
 | Stabilize and enable `-Z embed-metadata=no` by default | @Kobzol | stablization PR already open but not yet merged |
-| Decrease debuginfo size for .rlib files | ? | likely through enabling compression; early benchmarks show near-original performance when compressed and unpacked split-dwarf is enabled |
 | Strip debuginfo from build scripts | ? | needs care to make sure that panics still show a symbolicated backtrace |
 | Avoid serializing unnecessary incremental state | ? | needs further investigation |
 | Avoid serializing queries on disk where possible. | ? | changes must backed by benchmarks showing that this has little effect on compilation speed |
@@ -144,6 +157,7 @@ Subtasks in this category can be worked on in parallel.
 | Task | Owner(s) | Notes | 
 | ---- | -------- | ----- |
 | Remove duplicate sections between incremental cache and `.rlib` files  | ? | depends on subgoal B3. needs design work. |
+| Decrease debuginfo size for .rlib files | ? | likely through enabling compression; early benchmarks show near-original performance when compressed and unpacked split-dwarf is enabled. needs careful design if binaries are to remain static and portable. may be less urgent once `dev` profiles use `line-tables-only`. |
 | Use DWARF type signature computation to avoid duplicating debuginfo in the final binary  | ? | overlaps with binary-size roadmap, needs coordination |
 | Use `dwz` to avoid duplicating debuginfo in the final binary  | ? | unclear whether this should be Cargo or Rustc's responsibility, needs design work. overlaps with binary-size roadmap |
 | Extend Rustc with equivalents of `-gmodules` and `-fno-standalone-debug` to avoid duplicating debuginfo in intermediate artifacts | ? | large task, needs compiler design work. needs care to avoid making intermediate files non-portable. |
@@ -167,7 +181,7 @@ Subtasks in this category can be worked on in parallel.
 | Task         | Owner(s) | Notes |
 | ----------- | -------- | ----- |
 | Design discussions with Cargo team | @jyn514 | Most uncertainty. Needs Cargo team capacity. |
-| Delete build script executables between reruns | ? | needs care to ensure that outputs can be reused even when the original build script is gone |
+| Delete build script executables between reruns | ? | needs care to ensure that outputs can be reused even when the original build script is gone. needs care to ensure that rebuilding a build script doesn't unnecessarily slow down builds.  |
 
 ##### Distinguish temporary build script outputs from final outputs
 
@@ -195,7 +209,7 @@ Subtasks in this category can be worked on in parallel.
 
 
 Suggested reviewers:
-- cargo: ?
+- cargo: Ed Page, Ross Sullivan
 - compiler: Petrochenkov, Nick Nethercote
 - compiler/performance: Jakub Beranek
 - infra/bootstrap: Jakub
