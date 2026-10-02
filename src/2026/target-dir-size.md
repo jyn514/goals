@@ -11,15 +11,15 @@
 
 Investigate, triage, and decrease the size of intermediate compilation directories (e.g. `target/`).
 With a funded team of 3-5 engineers, we aim over the next year to decrease the size of the directory by 60% or more for fresh builds and by 80% or more for repeated builds across version branches.
+This includes both decreases in artifact size and garbage-collection within a target directory, such as artifacts from an earlier edit.
 We will benchmark based on real crates in the Rust ecosystem, focusing on disproportionately large and widely used crates.
-
 After benchmarking, we will work on multi-pronged approaches that allow parallel work on high-impact interventions.
 Our work will be incremental, in the sense that partial work outputs will still be useful; we do not need a full year to start seeing improvements.
-The more funding we receive, the more work we will be able to deliver.
 
-This goal does not currently include garbage-collecting entire target directories within Cargo.
-There is [existing work][cargo#13136] by Ross Sullivan on those improvements, but Ross is not a member of this goal.
-This goal *does* include garbage-collection within a target directory, such as artifacts from an earlier edit.
+Note that this goal does *not* include garbage-collection across directories, such as deleting `cargo -Z script` artifacts.
+There is [parallel work][cargo#17524] on that, but it is not currently part of this goal.
+
+[cargo#17524]: https://github.com/rust-lang/cargo/pull/17524
 
 ## Motivation
 
@@ -196,7 +196,7 @@ Subtasks in this category can be worked on in parallel.
 
 | Task         | Owner(s) | Notes |
 | ----------- | -------- | ----- |
-| Design discussions with Cargo team | @jyn514 | Most uncertainty. Needs Cargo team capacity. See [existing cargo discussion][scratchpad]. |
+| Design discussions with Cargo team | ? | Most uncertainty. Needs Cargo team capacity. See [existing cargo discussion][scratchpad]. |
 | Add Cargo APIs that allow build scripts to communicate this | ? | |
 | Extend Cargo to GC temporary build script outputs | ? | |
 | Make targeted PRs within the ecosystem to switch crates to use the new APIs | ? | |
@@ -204,6 +204,13 @@ Subtasks in this category can be worked on in parallel.
 | Task         | Owner(s) | Notes |
 | ----------- | -------- | ----- |
 | Design discussions with Compiler team | @jyn514 | will benefit from a compiler team sponsor, but not strictly necessary |
+| ? | ? | needs design discussion before further subtasks can be created |
+
+##### Garbage collect target directories within a project
+
+| Task         | Owner(s) | Notes |
+| ----------- | -------- | ----- |
+| Design discussions with Cargo team | @ranger-ross | discussions already ongoing in [cargo#17512], less risk than other design tasks |
 | ? | ? | needs design discussion before further subtasks can be created |
 
 ## Team asks
@@ -249,22 +256,28 @@ I also have project management experience from my time at Ferrocene,
 as well as consensus building experience on policy, design, and implementation work within the Rust project.
 As part of this work, I would lead implementation, mentor contributors, and coordinate between the Compiler and Cargo teams.
 
+Ross Sullivan is a current member of the Cargo team and has ongoing work to reduce target directory sizes.
+[Early research][cargo#17512] shows the possibility of a 56% or more size reduction in cross-project caches from his ongoing work alone.
+Further reductions are possible with more workstreams.
+For Ross to join, we would need a substantial amount of the funding to be paid "up-front" at the start of the goal.
+
+[cargo#17512]: https://github.com/rust-lang/cargo/pull/17512
+[brlo]: https://blog.rust-lang.org/inside-rust/2026/08/18/reducing-target-dir-size-on-nightly/
+
 Kobzol has been responsible for implementing and stabilizing `-Z embed-metadata=no`, and is a current member of the Council.
 `embed-metadata` has reduced the size of release builds by [almost 30%][brlo] in the past, and we are confident that further similar improvements are possible.
-
-[brlo]: https://blog.rust-lang.org/inside-rust/2026/08/18/reducing-target-dir-size-on-nightly/
 
 Zeklandia has a non-traditional programming background, but has the logistical flexibility to do short-term contract work,
 and I hope to mentor her to be a long-term maintainer on these compiler subsystems.
 
 
-|Purpose                                                                         |Cost                           |Funded  |Sponsor(s)                                   |
-|--------------------------------------------------------------------------------|-------------------------------|--------|---------------------------------------------|
-|@jyn514 as owner (6-12 months, full-time)                                       |Ask                            |No      |                                             |
-|@Kobzol as advisor (6-12 months, part-time)                                     |Ask                            |No      |                                             |
-|@Zeklandia as benchmark selector and analyst                                    |Ask                            |No      |                                             |
-|Contributor (1-12 months, part- or full-time, repeatable, multiple openings)    |TBD                            |No      |                                             |
-|Cargo maintainer funding (1-12 months, part-time, possibly multiple maintainers)|TBD                            |No      |                                             |
+|Purpose                                                                              |Cost                           |Funded  |Sponsor(s)                                   |
+|-------------------------------------------------------------------------------------|-------------------------------|--------|---------------------------------------------|
+|@jyn514 as owner (6-12 months, full-time)                                            |Ask                            |No      |                                             |
+|@ranger-ross as Cargo design contact and implementor (6-12 months, variable)|Ask                            |No      |                                             |
+|@Kobzol as advisor (6-12 months, part-time)                                          |Ask                            |No      |                                             |
+|@Zeklandia as benchmark selector and analyst (variable, part-time)                   |Ask                            |No      |                                             |
+|Contributor (1-12 months, part- or full-time, multiple openings)                     |TBD                            |No      |                                             |
 
 
 ## Frequently asked questions
