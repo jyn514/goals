@@ -232,12 +232,11 @@ Suggested reviewers:
 
 ## Help wanted
 
-|Task                                             |Experience level                                         |Time investment                                                 |
-|-------------------------------------------------|---------------------------------------------------------|----------------------------------------------------------------|
-|Determine representative benchmarks              |No Rust experience needed.                               |1-2 weeks part-time                                             |
-|Create a maintainable benchmarking tool          |Medium Rust experience, compiler experience preferable   |1-3 weeks full-time                                             |
-|Extend rustc-perf suite to measure artifact sizes|Medium Rust experience, compiler experience not necessary|2-4 weeks full-time                                             |
-|Improve artifact sizes                           |Medium Rust experience, compiler experience preferable   |1-12 months full-time. Multiple positions available. |
+|Task                                             |Experience level                                                      |Time investment                                                  |
+|-------------------------------------------------|----------------------------------------------------------------------|-----------------------------------------------------------------|
+|Create a maintainable benchmarking tool          |Medium Rust experience, compiler experience preferable                |1-3 weeks full-time                                              |
+|Extend rustc-perf suite to measure artifact sizes|Medium Rust experience, compiler experience not necessary             |2-4 weeks full-time                                              |
+|Improve artifact sizes                           |Medium Rust experience, compiler or build system experience preferable|1-12 months part-time or full-time. Multiple positions available.|
 
 
 ## Funding
