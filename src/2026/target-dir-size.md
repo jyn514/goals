@@ -136,7 +136,7 @@ Within a subgoal, tasks are serially dependent unless otherwise labeled.
 | Extend the PoC to a maintainable tool that can be used outside the project goal team | ? | Likely implemented as a `rustc_driver` or `-Z` flag |
 | Add support for running that tool to `rustc-perf` benchmarks | ? | Subgoal id A2 |
 | Add a graph of artifact sizes over time to the `rustc-perf` site | ? | |
-| (Optional) Add support for auto-triaging whether a size change is statistically relevant | ? | |
+| (Optional) Add support for auto-triaging whether a size change is statistically relevant | ? | likely not necessary to start since metadata and query cache sizes are stable |
 
 ##### Collect representative benchmarks
 
