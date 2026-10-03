@@ -141,9 +141,9 @@ Within a subgoal, tasks are serially dependent unless otherwise labeled.
 
 | Task        | Owner(s) | Notes |
 | ----------- | -------- | ----- |
-| Collect a sample of crates that have unusually large artifact sizes | ? | Subgoal id B1 |
-| Add those crates to the `rustc-perf` benchmark suite | ? | Depends on subgoal A2.  May require adding support for chains of dependencies to rustc-perf, since artifact size is impacted by monomorphization |
-| Identify the largest sub-sections of `.rmeta`, `.rlib`, and `incremental/` files for those benchmarks | ? | Subgoal id B3 |
+| Collect a sample of crates that have unusually large artifact sizes | @Zeklandia | Subgoal id B1 |
+| Add those crates to the `rustc-perf` benchmark suite | @Zeklandia | Depends on subgoal A2.  May require adding support for chains of dependencies to rustc-perf, since artifact size is impacted by monomorphization |
+| Identify the largest sub-sections of `.rmeta`, `.rlib`, and `incremental/` files for those benchmarks | @Zeklandia | Subgoal id B3 |
 
 #### Near-term improvements
 These will focus on improving intermediate artifact size for gathered benchmarks.
@@ -152,10 +152,10 @@ Each of these can be worked on in parallel.
 | Task        | Owner(s) | Notes |
 | ----        | -------- | ----- |
 | Stabilize and enable `-Z embed-metadata=no` by default | @Kobzol | stablization PR already open but not yet merged |
-| Reduce debuginfo in build scripts | ? | if [cargo#17518] doesn't already apply to build scripts, it could be extended |
+| Reduce debuginfo in build scripts | @jyn514 | if [cargo#17518] doesn't already apply to build scripts, it could be extended |
 | Avoid serializing unnecessary incremental state | ? | needs further investigation |
 | Avoid serializing queries on disk where possible. | ? | changes must backed by benchmarks showing that this has little effect on compilation speed |
-| Dynamically link the standard library in build scripts | ? | |
+| Dynamically link the standard library in build scripts | @jyn514 | |
 
 #### Structural improvements
 
@@ -165,16 +165,16 @@ Subtasks in this category can be worked on in parallel.
 | Task | Owner(s) | Notes | 
 | ---- | -------- | ----- |
 | Remove duplicate sections between incremental cache and `.rlib` files  | ? | depends on subgoal B3. needs design work. |
-| Decrease debuginfo size for .rlib files | ? | likely through enabling compression; early benchmarks show near-original performance when compressed and unpacked split-dwarf is enabled. needs careful design if binaries are to remain static and portable. may be less urgent once `dev` profiles use `line-tables-only`. |
-| Use DWARF type signature computation to avoid duplicating debuginfo in the final binary  | ? | overlaps with binary-size roadmap, needs coordination |
-| Use `dwz` to avoid duplicating debuginfo in the final binary  | ? | unclear whether this should be Cargo or Rustc's responsibility, needs design work. overlaps with binary-size roadmap |
-| Extend Rustc with equivalents of `-gmodules` and `-fno-standalone-debug` to avoid duplicating debuginfo in intermediate artifacts | ? | large task, needs compiler design work. needs care to avoid making intermediate files non-portable. |
+| Decrease debuginfo size for .rlib files | @jyn514 | likely through enabling compression; early benchmarks show near-original performance when compressed and unpacked split-dwarf is enabled. needs careful design if binaries are to remain static and portable. may be less urgent once `dev` profiles use `line-tables-only`. |
+| Use DWARF type signature computation to avoid duplicating debuginfo in the final binary  | @jyn514 | overlaps with binary-size roadmap, needs coordination |
+| Use `dwz` to avoid duplicating debuginfo in the final binary  | @jyn514 | unclear whether this should be Cargo or Rustc's responsibility, needs design work. overlaps with binary-size roadmap |
+| Extend Rustc with equivalents of `-gmodules` and `-fno-standalone-debug` to avoid duplicating debuginfo in intermediate artifacts | @jyn514 | large task, needs compiler design work. needs care to avoid making intermediate files non-portable. |
 
 ##### Decrease build script artifact sizes
 
 | Task         | Owner(s) | Notes |
 | ----------- | -------- | ----- |
-| Determine which build scripts generate the largest outputs | ? | Depends on subgoal B1 |
+| Determine which build scripts generate the largest outputs | @Zeklandia | Depends on subgoal B1 |
 | Make targeted improvements to crates in the ecosystem | ? | for example, get build scripts to delete unused temporary artifacts after a successful build |
 
 ##### Redesign `incremental/` directories to be GC-able
