@@ -232,12 +232,13 @@ Suggested reviewers:
 - infra/bootstrap: Jakub
 
 ## Help wanted
+Note: at this stage we are primarily looking for contributors who are *new* to this area of the compiler, or new to the Rust project overall, and wish to be mentored as part of this goal.
+We have sufficient contributors with existing experience.
 
 |Task                                             |Experience level                                                      |Time investment                                                  |
 |-------------------------------------------------|----------------------------------------------------------------------|-----------------------------------------------------------------|
 |Create a maintainable benchmarking tool          |Medium Rust experience, compiler experience preferable                |1-3 weeks full-time                                              |
-|Extend rustc-perf suite to measure artifact sizes|Medium Rust experience, compiler experience not necessary             |2-4 weeks full-time                                              |
-|Improve artifact sizes                           |Medium Rust experience, compiler or build system experience preferable|1-12 months part-time or full-time. Multiple positions available.|
+|Interns to improve artifact sizes                |Medium Rust experience, compiler or build system experience preferable|1-12 months part-time or full-time. Multiple positions available.|
 
 
 ## Funding
