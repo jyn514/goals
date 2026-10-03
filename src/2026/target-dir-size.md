@@ -164,7 +164,7 @@ Subtasks in this category can be worked on in parallel.
 
 | Task | Owner(s) | Notes | 
 | ---- | -------- | ----- |
-| Remove duplicate sections between incremental cache and `.rlib` files  | ? | depends on subgoal B3. needs design work. |
+| Remove duplicate sections between incremental cache and `.rlib` files  | @panstromek | depends on subgoal B3. needs design work. |
 | Decrease debuginfo size for .rlib files | @jyn514 | likely through enabling compression; early benchmarks show near-original performance when compressed and unpacked split-dwarf is enabled. needs careful design if binaries are to remain static and portable. may be less urgent once `dev` profiles use `line-tables-only`. |
 | Use DWARF type signature computation to avoid duplicating debuginfo in the final binary  | @jyn514 | overlaps with binary-size roadmap, needs coordination |
 | Use `dwz` to avoid duplicating debuginfo in the final binary  | @jyn514 | unclear whether this should be Cargo or Rustc's responsibility, needs design work. overlaps with binary-size roadmap |
@@ -199,10 +199,12 @@ Subtasks in this category can be worked on in parallel.
 | Add Cargo APIs that allow build scripts to communicate this | ? | |
 | Extend Cargo to GC temporary build script outputs | ? | |
 | Make targeted PRs within the ecosystem to switch crates to use the new APIs | ? | |
- ##### Redesign the `.rmeta` and `.rlib` formats for better disk usage.
+ ##### Redesign the `.rmeta`, `.rlib`, and incremental formats for better disk usage.
+Improvements to the `Encodable` serialization will result in decreased disk usage across all three file types.
+
 | Task         | Owner(s) | Notes |
 | ----------- | -------- | ----- |
-| Design discussions with Compiler team | @jyn514 | will benefit from a compiler team sponsor, but not strictly necessary |
+| Design discussions with Compiler team | @panstromek | will benefit from a compiler team sponsor, but not strictly necessary |
 | ? | ? | needs design discussion before further subtasks can be created |
 
 ##### Garbage collect target directories within a project
@@ -259,6 +261,9 @@ Ross Sullivan is a current member of the Cargo team and has ongoing work to redu
 Further reductions are possible with more workstreams.
 For Ross to join, we would need a substantial amount of the funding to be paid "up-front" at the start of the goal.
 
+Matyáš Racek is a current member of the Compiler Performance working group and has ongoing work to reduce encoding sizes in rmeta files and incremental caches.
+He has experience measuring, triaging, and improving the compiler's performance, and his assistance will be invaluable in optimizations within the compiler itself.
+
 [cargo#17512]: https://github.com/rust-lang/cargo/pull/17512
 [brlo]: https://blog.rust-lang.org/inside-rust/2026/08/18/reducing-target-dir-size-on-nightly/
 
@@ -272,10 +277,11 @@ and I hope to mentor her to be a long-term maintainer on these compiler subsyste
 |Purpose                                                                              |Cost                           |Funded  |Sponsor(s)                                   |
 |-------------------------------------------------------------------------------------|-------------------------------|--------|---------------------------------------------|
 |@jyn514 as owner (6-12 months, full-time)                                            |Ask                            |No      |                                             |
-|@ranger-ross as Cargo design contact and implementor (6-12 months, variable)|Ask                            |No      |                                             |
+|@ranger-ross as Cargo design contact and implementor (6-12 months, variable)         |Ask                            |No      |                                             |
+|@panstromek as wg-perf design contact and implementor (6-12 months, part-time)       |Ask                            |No      |                                             |
 |@Kobzol as advisor (6-12 months, part-time)                                          |Ask                            |No      |                                             |
 |@Zeklandia as benchmark selector and analyst (variable, part-time)                   |Ask                            |No      |                                             |
-|Contributor (1-12 months, part- or full-time, multiple openings)                     |TBD                            |No      |                                             |
+|Intern (1-12 months, part- or full-time, multiple openings)                          |TBD                            |No      |                                             |
 
 
 ## Frequently asked questions
