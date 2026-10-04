@@ -47,7 +47,7 @@ We expect that we may need to coordinate between teams, but that our efforts wil
 
 ### The status quo
 
-Compiling Rust programs taks three primary resources:
+Compiling Rust programs takes three primary resources:
 1. CPU time and wall time
 2. Memory use
 3. Disk space
