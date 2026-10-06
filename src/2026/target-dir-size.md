@@ -170,6 +170,16 @@ Subtasks in this category can be worked on in parallel.
 | Use `dwz` to avoid duplicating debuginfo in the final binary  | @jyn514 | unclear whether this should be Cargo or Rustc's responsibility, needs design work. overlaps with binary-size roadmap |
 | Extend Rustc with equivalents of `-gmodules` and `-fno-standalone-debug` to avoid duplicating debuginfo in intermediate artifacts | @jyn514 | large task, needs compiler design work. needs care to avoid making intermediate files non-portable. |
 
+##### Reduce overlap between test binaries
+Currently, `cargo test` produces one `libtest` harness binary for each crate in a workspace.
+In crates with many workspaces, this leads to a large amount of time spent linking and space taken up by the resulting many binaries.
+Can we consolidate these into a single binary, or use dynamic linking to reduce the amount of duplicated space?
+
+| Task         | Owner(s) | Notes |
+| ----------- | -------- | ----- |
+| Test on crates with large workspaces to see where the space is taken up | ? |  |
+| Investigate possible approaches to see which are feasible | ? | |
+| ? | ? | needs design discussion before further subtasks can be created |
 ##### Decrease build script artifact sizes
 
 | Task         | Owner(s) | Notes |
