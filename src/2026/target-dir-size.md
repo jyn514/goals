@@ -1,4 +1,4 @@
-# Target directory size
+# Target directory size reduction
 
 | Metadata         |                                                                                  |
 | :--------------- | -------------------------------------------------------------------------------- |
@@ -6,6 +6,10 @@
 | Status           | Proposed                                                                         |
 | What and why     | Reduce the size of temporary compilation artifacts so developers need less disk space |
 | Zulip channel    | N/A (an existing stream can be re-used or new streams can be created on request) |
+| [cargo] champion | @ranger-ross |
+| [compiler] champion | @petrochenkov |
+| [wg-compiler-performance] | @Kobzol |
+| [infra] | @Kobzol |
 
 ## Summary
 
